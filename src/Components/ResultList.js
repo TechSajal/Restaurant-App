@@ -2,7 +2,7 @@ import React from "react";
 import {View,Text,StyleSheet,FlatList,TouchableOpacity} from "react-native"
 import ResultDetail from "./ResultDetail";
 import { withNavigation } from "react-navigation";
-const ResultList =({title,results,navigat  ion}) =>{
+const ResultList =({title,results,navigation}) =>{
 return(
     <View style={styles.container}>
      <Text style={styles.title}>{title}</Text>
@@ -13,7 +13,7 @@ return(
      keyExtractor = {result => result.id}
      renderItem={({item}) =>{
         return (
-            <TouchableOpacity onPress={()=> navigation.navigate("ResultShow")  }>
+            <TouchableOpacity onPress={()=> navigation.navigate("ResultShow",{id:item.id})}>
                 <ResultDetail result={item}/>
             </TouchableOpacity>
             )
