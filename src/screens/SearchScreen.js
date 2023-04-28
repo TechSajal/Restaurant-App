@@ -1,26 +1,19 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useState} from "react";
+import { View, Text, StyleSheet,ScrollView } from "react-native";
 import SearchBar from "../Components/SearchBar";
-import yelp from "../Api/yelp"
-import axios from "axios";
+import useResults from "../Hooks/useResults";
+import ResultList from "../Components/ResultList";
 const searchscreen = () => {
   const [term, setTerm] = useState(" ");
-  const [results, setResults] = useState([]);
+  const [searchApi,results,errorMessage] = useResults();
+ 
+  const filterResultByPrice = (price) => {
+    //  if price = $ || price = $$ || price = $$$
+        return results.filter(result =>{
+           return result.price === price;
+        })
 
-  const searchApi = async() => {
-  try{
-    const response = await yelp.get("/search", {
-      params: {
-        limit: 50,
-        term,
-        location: "san jose"
-      }
-    });
-    setResults(response.data.businesses);
-  }catch(error){
-     console.log("error")
   }
-  };
   //  function onClick(){
   //    axios.get( "https://api.yelp.com/v3/businesses/search",{
   //     params: {
@@ -38,12 +31,17 @@ const searchscreen = () => {
   //    })
   //  };
   return (
-    <View>
+    <View style={{ flex:1 }}>
       <SearchBar
       term={term} 
       onTermChange={setTerm} 
-      onTermSubmit={()=> searchApi()} /> 
-      <Text>We have found {results.length} results</Text>
+      onTermSubmit={()=> searchApi(term)} /> 
+      {errorMessage?<Text>{errorMessage}</Text> : null}
+      <ScrollView>
+      <ResultList  results = {filterResultByPrice("$")} title="Cost Effective"/>
+      <ResultList  results = {filterResultByPrice("$$")} title="Bit Pricier"/>
+      <ResultList  results = {filterResultByPrice("$$$")} title="Big Spender"/>
+      </ScrollView>      
     </View>
   );
 
