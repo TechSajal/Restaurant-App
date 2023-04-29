@@ -33,7 +33,9 @@ const ReasultShowScreen = ({navigation}) => {
        renderItem={({item}) => {
           return <Image style={style.image} source={ {uri:item} } />
       }} />
-      <Text>{error}</Text>
+      <Text style={style.text}>Location</Text>
+      <Text style={style.address}>{result.location.display_address[0]+" "+result.location.display_address[1]}</Text>
+      <Text style={style.address}>Rating:-{result.rating}</Text>
 
         </View>
     )
@@ -56,6 +58,11 @@ const style=StyleSheet.create({
         height:150,
         marginLeft:15,
         marginTop:10
+    },
+    address:{
+        fontWeight:"400",
+        fontSize:18,
+        marginLeft:15
     }
 })
 
